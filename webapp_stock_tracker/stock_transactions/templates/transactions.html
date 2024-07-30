@@ -1,0 +1,11 @@
+<html>
+    <h1>Stock transactions</h1>
+
+    <ul>
+        {% for transaction in transactions %}
+        <li>
+            {{transaction.stock_symbol}} for the price {{transaction.price_per_share}}
+        </li>
+        {% endfor %}
+    </ul>
+</html>

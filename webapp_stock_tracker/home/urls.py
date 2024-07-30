@@ -1,5 +1,5 @@
 from django.urls import path
 from . import views
 urlpatterns = [
-    path("get/", views.home),
+    path("", views.index),
 ]
