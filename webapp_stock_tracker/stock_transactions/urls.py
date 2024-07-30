@@ -1,5 +1,6 @@
 from django.urls import path
 from . import views
 urlpatterns = [
-    path("get/", views.home),
+    path("get/", views.get_transactions),
+    path("post/",views.create_stock_transaction)
 ]

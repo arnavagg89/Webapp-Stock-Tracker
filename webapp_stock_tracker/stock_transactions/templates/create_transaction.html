@@ -1,0 +1,64 @@
+<!-- myapp/templates/post_transaction.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Stock Transaction</title>
+</head>
+<body>
+    <h1>Create Stock Transaction</h1>
+    <form id="transactionForm">
+        <label for="stock_symbol">Stock Symbol:</label>
+        <input type="text" id="stock_symbol" name="stock_symbol" required><br><br>
+        
+        <label for="price_per_share">Price per Share:</label>
+        <input type="number" id="price_per_share" name="price_per_share" step="0.01" required><br><br>
+        
+        <label for="number_of_shares">Number of Shares:</label>
+        <input type="number" id="number_of_shares" name="number_of_shares" required><br><br>
+        
+        <label for="transaction_date">Transaction Date:</label>
+        <input type="date" id="transaction_date" name="transaction_date" required><br><br>
+        
+        <label for="broker_fee">Broker Fee (optional):</label>
+        <input type="number" id="broker_fee" name="broker_fee" step="0.01"><br><br>
+        
+        <button type="submit">Submit</button>
+    </form>
+
+    <script>
+        document.getElementById('transactionForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const formData = new FormData(event.target);
+            const data = {
+                stock_symbol: formData.get('stock_symbol'),
+                price_per_share: parseFloat(formData.get('price_per_share')),
+                number_of_shares: parseInt(formData.get('number_of_shares')),
+                transaction_date: formData.get('transaction_date'),
+                broker_fee: formData.get('broker_fee') ? parseFloat(formData.get('broker_fee')) : null
+            };
+
+            fetch('http://localhost:8000/api/stocktransactions/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+                alert('Transaction created successfully!');
+                // Optionally, you can reset the form or redirect the user
+                document.getElementById('transactionForm').reset();
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                alert('An error occurred while creating the transaction.');
+            });
+        });
+    </script>
+</body>
+</html>
